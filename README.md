@@ -3,6 +3,6 @@ O projeto consiste na elaboração de uma aplicação no Streamlit similar ao Si
 
 **Tema:** A decidir
 
-**Grupo:** 
-Lucas Francisco de Albuquerque Barbosa(20221011110001);
+**Grupo:** <br/>
+Lucas Francisco de Albuquerque Barbosa(20221011110001);<br/>
 Murillo Viniz de Oliveira Pereira (20221011110036).
