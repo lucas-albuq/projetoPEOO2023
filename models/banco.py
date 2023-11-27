@@ -33,6 +33,46 @@ class NBanco:
     __bancos = []
 
     @classmethod
+    def inserir(cls, obj):
+        cls.abrir()
+        id = 0
+        for aux in cls.__bancos:
+            if aux.get_id() > id: id = aux.get_id()
+        obj.set_id(id + 1)
+        cls.__bancos.append(obj)
+        cls.salvar()
+
+    @classmethod
+    def listar(cls):
+        cls.abrir()
+        return cls.__bancos
+    
+    @classmethod
+    def listar_id(cls, obj):
+        cls.abrir()
+        for aux in cls.__bancos:
+            if aux.get_id() == obj.get_id:
+                return aux
+        return None
+
+    @classmethod
+    def atualizar(cls, obj):
+        cls.abrir()
+        aux = cls.listar_id(obj)
+        if aux is not None:
+            aux.set_nome(obj.get_nome())
+            cls.salvar()
+
+    @classmethod
+    def excluir(cls, obj):
+        cls.abrir()
+        objeto = cls.listar_id(obj)
+        if objeto is not None:
+            cls.__bancos.remove(objeto)
+            cls.salvar()
+
+
+    @classmethod
     def salvar(cls):
         with open("bancos.json", mode="w") as arquivo:
             json.dump(cls.__bancos, arquivo, default=Banco.to_json)
