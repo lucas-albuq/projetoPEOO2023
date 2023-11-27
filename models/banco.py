@@ -28,3 +28,23 @@ class Banco:
     def set_nome(self, nome):
         if len(nome.split()) != 0: self.__nome = nome
         else: raise ValueError("Insira um nome válido.")
+
+class NBanco:
+    __bancos = []
+
+    @classmethod
+    def salvar(cls):
+        with open("bancos.json", mode="w") as arquivo:
+            json.dump(cls.__bancos, arquivo, default=Banco.to_json)
+
+    @classmethod
+    def abrir(cls):
+        cls.__agendas = []
+        try:
+            with open("bancos.json", mode="r") as arquivo:
+                bancos_json = json.load(arquivo)
+                for obj in bancos_json:
+                    aux = Banco(obj['id'], obj['nome'])
+                    cls.__bancos.append(aux)
+        except FileNotFoundError:
+            pass
