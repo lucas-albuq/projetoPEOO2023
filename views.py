@@ -33,9 +33,18 @@ class View:
             if cliente.get_nome() == "admin":
                 return
         View.Cliente_inserir("admin", "admin", "admin", "000000000-00", datetime.today(), "0000")
-
-    def Conta_inserir(obj):
-        NConta.inserir(obj)
+    
+    def Cliente_login(cpf, senha):
+        for cliente in View.Cliente_listar():
+            if cliente.get_cpf() == cpf and cliente.get_senha() == senha:
+                return cliente
+            return None
+        
+    def Conta_inserir(id_cliente, saldo, limite, agencia, numero_conta, tipo_conta, confirmado):
+        conta = Conta(0, id_cliente, saldo, limite, agencia, numero_conta, tipo_conta, confirmado)
+        for obj in View.Conta_listar:
+            if obj.get_id_cliente == id_cliente:
+                raise ValueError("Esse cliente já possui uma conta")
 
     def Conta_listar():
         NConta.listar()
@@ -43,13 +52,16 @@ class View:
     def Conta_listar_id(id):
         NConta.listar_id(id)
 
-    def Conta_atualizar(obj):
-        NConta.atualizar(obj)
+    def Conta_atualizar(id, id_cliente, saldo, limite, agencia, numero_conta, tipo_conta, confirmado):
+        conta = Conta(id, id_cliente, saldo, limite, agencia, numero_conta, tipo_conta, confirmado)
+        NConta.atualizar(conta)
 
-    def Conta_excluir(obj):
-        NConta.excluir(obj)
+    def Conta_excluir(id):
+        conta = View.Conta_listar_id(id)
+        NConta.excluir(conta)
 
-    def Transferencia_inserir(obj):
+    def Transferencia_inserir(id_conta, id_conta_do_recebedor, data_transferencia, valor, confirmado):
+        
         NTransferencia.inserir(obj)
 
     def Transferencia_listar():
