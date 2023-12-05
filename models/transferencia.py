@@ -34,24 +34,34 @@ class Transferencia:
         return self.__confirmado
     
     def set_id(self, id):
-        if isinstance(id, int): self.__id = id
-        else: raise ValueError("O id informado não é um número inteiro")
+        if isinstance(id, int): 
+            self.__id = id
+        else: 
+            raise ValueError("O id informado não é um número inteiro")
 
     def set_id_conta(self, id_conta):
-        if isinstance(id_conta, int): self.__id_conta = id_conta
-        else: raise ValueError("O id da conta informado não é um número inteiro")
+        if isinstance(id_conta, int): 
+            self.__id_conta = id_conta
+        else: 
+            raise ValueError("O id da conta informado não é um número inteiro")
 
     def set_id_conta_do_recebedor(self, id_conta_do_recebedor):
-        if isinstance(id_conta_do_recebedor, int): self.__id_conta_do_recebedor = id_conta_do_recebedor
-        else: raise ValueError("O id da conta do recebedor informado não é um número inteiro")
+        if isinstance(id_conta_do_recebedor, int): 
+            self.__id_conta_do_recebedor = id_conta_do_recebedor
+        else: 
+            raise ValueError("O id da conta do recebedor informado não é um número inteiro")
 
     def set_valor(self, valor):
-        if isinstance(valor, float) and valor > 0: self.__valor = valor
-        else: raise ValueError("O valor informado é inválido")
+        if isinstance(valor, float) and valor > 0: 
+            self.__valor = valor
+        else: 
+            raise ValueError("O valor informado é inválido")
 
     def set_confirmado(self, confirmado):
-        if isinstance(confirmado, bool): self.__confirmado = confirmado
-        else: raise ValueError("Confirmação inválida")
+        if isinstance(confirmado, bool): 
+            self.__confirmado = confirmado
+        else: 
+            raise ValueError("Confirmação inválida")
 
 class NTransferencia:
     __transferencias = []

@@ -1,7 +1,7 @@
 import json
 
 class Conta:
-    def __init__(self, id, id_cliente, saldo, limite, agencia, numero_conta, tipo_conta):
+    def __init__(self, id, id_cliente, saldo, limite, agencia, numero_conta, tipo_conta, confirmado):
         self.set_id(id)
         self.set_id_cliente(id_cliente)
         self.set_saldo(saldo)
@@ -9,6 +9,7 @@ class Conta:
         self.set_agencia(agencia)
         self.set_numero_conta(numero_conta)
         self.set_tipo_conta(tipo_conta)
+        self.set_confirmado(confirmado)
 
     def __str__(self):
         return f"id - {self.__id}, id do Cliente - {self.__id_cliente}, Saldo - {self.__saldo}, Limite - {self.__limite}, Agência - {self.__agencia}, Número da Conta - {self.__numero_conta}, Tipo de Conta - {self.__tipo_conta}"
@@ -44,6 +45,9 @@ class Conta:
 
     def get_tipo_conta(self):
         return self.__tipo_conta
+    
+    def get_confirmado(self):
+        return self.__confirmado
 
     def set_id(self, id):
         if isinstance(id, int):
@@ -87,6 +91,11 @@ class Conta:
         else:
             raise ValueError("Tipo da conta inválido")
 
+    def set_confirmado(self, confirmado):
+        if isinstance(confirmado, bool):
+            self.__confirmado = confirmado
+        else:
+            raise ValueError("Confirmação inválida")
 class NConta:
     __contas = []
 
