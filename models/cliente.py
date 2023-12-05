@@ -2,7 +2,7 @@ import json
 from datetime import datetime
 
 class Cliente:
-    def __init__(self, id, nome, telefone, email, cpf, data_nascimento, senha):
+    def __init__(self, id: int, nome: str, telefone: str, email: str, cpf: str, data_nascimento: datetime, senha: str):
         self.set_id(id)
         self.set_nome(nome)
         self.set_telefone(telefone)

@@ -1,10 +1,12 @@
 import json
+import datetime
 
 class Transferencia:
-    def __init__(self, id, id_conta, id_conta_do_recebedor, valor, confirmado):
+    def __init__(self, id, id_conta, id_conta_do_recebedor, data_transferencia, valor, confirmado):
         self.set_id(id)
         self.set_id_conta(id_conta)
         self.set_id_conta_do_recebedor(id_conta_do_recebedor)
+        self.set_data_transferencia(data_transferencia)
         self.set_valor(valor)
         self.set_confirmado(confirmado)
 
@@ -15,6 +17,7 @@ class Transferencia:
         return {"id": self.__id,
                 "id_conta": self.__id_conta,
                 "id_conta_do_recebedor": self.__id_conta_do_recebedor,
+                "data_transferencia":  self.__data_transferencia.strftime("%d-%m-%Y %H:%M"),
                 "valor": self.__valor,
                 "confirmado": self.__confirmado}
     
@@ -26,6 +29,9 @@ class Transferencia:
     
     def get_id_conta_do_recebedor(self):
         return self.__id_conta_do_recebedor
+    
+    def get_data_transferencia(self):
+        return self.__data_transferencia
     
     def get_valor(self):
         return self.__valor
@@ -50,6 +56,12 @@ class Transferencia:
             self.__id_conta_do_recebedor = id_conta_do_recebedor
         else: 
             raise ValueError("O id da conta do recebedor informado não é um número inteiro")
+        
+    def set_data_transferencia(self, data_transferencia):
+        if isinstance(data_transferencia, datetime):
+            self.__data_transferencia = data_transferencia
+        else:
+            raise ValueError("Data da transferência inválida.")
 
     def set_valor(self, valor):
         if isinstance(valor, float) and valor > 0: 
@@ -114,6 +126,7 @@ class NTransferencia:
                         obj["id"],
                         obj["id_conta"],
                         obj["id_conta_do_recebedor"],
+                        datetime.strptime(obj["data_transferencia"], "%d-%m-%Y %H:%M"),
                         obj["valor"],
                         obj["confirmado"]
                         )

@@ -1,3 +1,6 @@
+# Ignorar os arquivos json
+*.json
+
 # Ignorar pasta do venv
 [Ss]treamlit/
 
