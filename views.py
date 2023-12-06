@@ -11,7 +11,7 @@ class View:
             if obj.get_cpf() == cpf:
                 raise ValueError("Cliente já cadastrado")
         NCliente.inserir(Cliente)
-        #validação dos outros dados já é feita dentro da classe Cliente
+        #validação dos outros dados já é feita dentro das classes
         #ver com Gilbert se também precisa fazer aqui
 
     def Cliente_listar():
@@ -61,8 +61,8 @@ class View:
         NConta.excluir(conta)
 
     def Transferencia_inserir(id_conta, id_conta_do_recebedor, data_transferencia, valor, confirmado):
-        
-        NTransferencia.inserir(obj)
+        transferencia = Transferencia(0, id_conta, id_conta_do_recebedor, data_transferencia, valor, confirmado)
+        NTransferencia.inserir(transferencia)
 
     def Transferencia_listar():
         NTransferencia.listar()
@@ -72,14 +72,16 @@ class View:
 
     def Transferencia_abrir_extrato_do_dia(data_inicio, data_fim):
         extrato = []
-        for Transferencia in NTransferencia.listar():
-            if data_fim >= Transferencia.get_data_transferencia() >= data_inicio:
+        for transferencia in NTransferencia.listar():
+            if data_fim >= transferencia.get_data_transferencia() >= data_inicio:
                 extrato.append(Transferencia)
         return extrato
 
 
-    def Transferencia_atualizar(obj):
-        NTransferencia.atualizar(obj)
+    def Transferencia_atualizar(id, id_conta, id_conta_do_recebedor, data_transferencia, valor, confirmado):
+        transferencia = Transferencia(id, id_conta, id_conta_do_recebedor, data_transferencia, valor, confirmado)
+        NTransferencia.atualizar(transferencia)
 
-    def Transferencia_excluir(obj):
-        NTransferencia.excluir(obj)
+    def Transferencia_excluir(id):
+        transferencia = View.Transferencia_listar_id(id)
+        NTransferencia.excluir(transferencia)
