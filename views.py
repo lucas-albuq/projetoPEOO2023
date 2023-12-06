@@ -42,8 +42,9 @@ class View:
     def Cliente_login(cpf, senha):
         for cliente in View.Cliente_listar():
             if cliente.get_cpf() == cpf and cliente.get_senha() == senha:
-                return cliente
-            return None
+                if View.Conta_listar_id_cliente(cliente.get_id()).get_confirmado():
+                    return cliente
+        return None
         
     def Conta_inserir(id_cliente, saldo, limite, agencia, numero_conta, tipo_conta, confirmado):
         conta = Conta(0, id_cliente, saldo, limite, agencia, numero_conta, tipo_conta, confirmado)
