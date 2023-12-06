@@ -1,3 +1,6 @@
+# Ignorar a pasta .history
+.history/
+
 # Ignorar os arquivos json
 *.json
 
