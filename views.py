@@ -19,6 +19,12 @@ class View:
     def Cliente_listar_id(id):
         NCliente.listar_id(id)
 
+    def Cliente_listar_cpf(cpf):
+        for cliente in View.Cliente_listar():
+            if cliente.get_cpf == cpf:
+                return cliente
+        return None
+
     def Cliente_atualizar(id, nome, telefone, email, cpf, data_nascimento, senha):
         cliente = Cliente(id, nome, telefone, email, cpf, data_nascimento, senha)
         NCliente.atualizar(cliente)
@@ -42,8 +48,9 @@ class View:
     def Conta_inserir(id_cliente, saldo, limite, agencia, numero_conta, tipo_conta, confirmado):
         conta = Conta(0, id_cliente, saldo, limite, agencia, numero_conta, tipo_conta, confirmado)
         for obj in View.Conta_listar:
-            if obj.get_id_cliente == id_cliente:
+            if obj.get_id_cliente() == id_cliente:
                 raise ValueError("Esse cliente já possui uma conta")
+        NConta.inserir(conta)
 
     def Conta_listar():
         NConta.listar()
@@ -51,6 +58,18 @@ class View:
     def Conta_listar_id(id):
         NConta.listar_id(id)
 
+    def Conta_listar_id_cliente(id):
+        for cliente in View.Conta_listar():
+            if cliente.get_id_cliente() == id:
+                return cliente
+        return None
+
+    def Conta_existe(numero_conta):
+        for conta in NConta.listar():
+            if conta.get_numero_conta() == numero_conta:
+                return True
+        return False
+    
     def Conta_atualizar(id, id_cliente, saldo, limite, agencia, numero_conta, tipo_conta, confirmado):
         conta = Conta(id, id_cliente, saldo, limite, agencia, numero_conta, tipo_conta, confirmado)
         NConta.atualizar(conta)
