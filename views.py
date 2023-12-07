@@ -64,6 +64,13 @@ class View:
             if cliente.get_id_cliente() == id:
                 return cliente
         return None
+    
+    def Conta_listar_nao_aprovadas():
+        contas_nao_aprovadas = []
+        for conta in View.Conta_listar():
+            if not conta.get_confirmado():
+                contas_nao_aprovadas.append(conta)
+        return contas_nao_aprovadas
 
     def Conta_existe(numero_conta):
         for conta in NConta.listar():

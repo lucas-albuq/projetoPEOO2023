@@ -11,10 +11,7 @@ class AprovarContaUI:
         with tab2: AprovarContaUI.atualizar()
 
     def listar():
-        contas_nao_aprovadas = []
-        for conta in View.Conta_listar():
-            if not conta.get_confirmado():
-                contas_nao_aprovadas.append(conta)
+        contas_nao_aprovadas = View.Conta_listar_nao_aprovadas()
         if len(contas_nao_aprovadas) == 0:
             st.write("Nenhuma conta para ser aprovada.")
         else:
@@ -24,10 +21,7 @@ class AprovarContaUI:
             st.dataframe(dataframe)
             
     def atualizar():
-        contas_nao_aprovadas = []
-        for conta in View.Conta_listar():
-            if not conta.get_confirmado():
-                contas_nao_aprovadas.append(conta)
+        contas_nao_aprovadas = View.Conta_listar_nao_aprovadas()
         if len(contas_nao_aprovadas) == 0:
             st.write("Nenhuma conta para ser aprovada.")
         else:

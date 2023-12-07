@@ -22,7 +22,8 @@ class Conta:
             "limite": self.__limite,
             "agencia": self.__agencia,
             "numero_conta": self.__numero_conta,
-            "tipo_conta": self.__tipo_conta
+            "tipo_conta": self.__tipo_conta,
+            "confirmado": self.__confimado
         }
 
     def get_id(self):
@@ -155,7 +156,8 @@ class NConta:
                         obj["limite"],
                         obj["agencia"],
                         obj["numero_conta"],
-                        obj["tipo_conta"]
+                        obj["tipo_conta"],
+                        obj["confirmado"]
                     )
                     cls.__contas.append(acc)
         except FileNotFoundError:
