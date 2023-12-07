@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 from views import View
 import time
 
@@ -14,7 +15,7 @@ class ManterContaUI:
     def listar():
         contas = View.Conta_listar()
         if len(contas) == 0:
-            st.write("Nenhuma conta para ser aprovada.")
+            st.write("Nenhuma conta cadastrada.")
         else:
             dic = {}
             for obj in contas: dic.append(obj.__dict__)
