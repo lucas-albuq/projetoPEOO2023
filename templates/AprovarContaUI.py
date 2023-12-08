@@ -28,5 +28,6 @@ class AprovarContaUI:
             op = st.selectbox("Aprovação de contas", contas_nao_aprovadas)
             if st.button("Aprovar"):   
                 View.Conta_atualizar(op.get_id(), op.get_id_cliente(), op.get_saldo(), op.get_limite(), op.get_agencia(), op.get_numero_conta(), op.get_tipo_conta(), True)
+                st.success("Conta aprovada!")
                 time.sleep(2)
                 st.rerun()

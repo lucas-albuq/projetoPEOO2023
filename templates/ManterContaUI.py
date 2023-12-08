@@ -33,7 +33,7 @@ class ManterContaUI:
         if st.button("Inserir"):
             try:
                 View.Conta_inserir(opCliente.get_id(), float(saldo), float(limite), int(agencia), numero_conta, tipo_conta, True)
-                st.sucess("Conta inserida com sucesso.")
+                st.success("Conta inserida com sucesso.")
                 time.sleep(2)
                 st.rerun()
             except ValueError as error:
@@ -52,7 +52,7 @@ class ManterContaUI:
             if st.button("Atualizar"):
                 try:
                     View.Conta_atualizar(op.get_id(), op.get_id_cliente(), float(saldo), float(limite), int(agencia), numero_conta, tipo_conta, True)
-                    st.sucess("Conta atualizada com sucesso")
+                    st.success("Conta atualizada com sucesso")
                     time.sleep(2)
                     st.rerun()
                 except ValueError as error:
@@ -65,7 +65,7 @@ class ManterContaUI:
             op = st.selectbox("Excluir conta", contas)
             if st.button("Excluir"):
                 View.Conta_excluir(op.get_id())
-                st.sucess("Conta excluída com sucesso")
+                st.success("Conta excluída com sucesso")
                 time.sleep(2)
                 st.rerun()
                                

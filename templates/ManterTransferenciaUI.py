@@ -6,7 +6,7 @@ import time
 class ManterTransferenciaUI:
     def main():
         st.header("Manter Transferencia")
-        tab1, tab2, tab3, tab4 = st.tabs(["Listar", "Inserir", "Atualizar", "Excluir"])
+        tab1, tab2 = st.tabs(["Listar", "Inserir", "Atualizar", "Excluir"])
         with tab1: ManterTransferenciaUI.listar()
         with tab2: ManterTransferenciaUI.inserir()
 
@@ -29,11 +29,11 @@ class ManterTransferenciaUI:
         valor = st.number_input("Insira o valor da transferencia")
         if st.button("Inserir"):
             if opPagador.get_saldo() < valor:
-                st.error("O pagador não possui saldo para essa trasnferência")
+                st.error("O pagador não possui saldo para essa transferência")
             else:
                 View.Transferencia_inserir(opPagador.get_id(), opRecebedor.get_id(), float(valor), True)
                 opPagador.set_saldo(opPagador.get_saldo()-float(valor))
                 opRecebedor.set_saldo(opRecebedor.get_saldo()+float(valor))
-                st.sucess("Trasnferência concluída com sucesso.")
+                st.success("Trasnferência concluída com sucesso.")
                 time.sleep(2)
                 st.rerun()   
