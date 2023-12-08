@@ -126,11 +126,14 @@ class View:
             return None
         return transferencias
 
-    def Transferencia_abrir_extrato_do_dia(data_inicio, data_fim):
+    def Transferencia_abrir_extrato_do_dia(data_inicio, data_fim, id_conta):
         extrato = []
+        conta = View.Conta_listar_id(id_conta)
         for transferencia in NTransferencia.listar():
-            if data_fim >= transferencia.get_data_transferencia() >= data_inicio:
+            if (data_fim >= transferencia.get_data_transferencia() >= data_inicio) and (conta.get_id() == transferencia.get_id_conta() or conta.get_id() == transferencia.get_id_conta_do_recebedor()):
                 extrato.append(Transferencia)
+        if len(extrato) == 0:
+            return None
         return extrato
 
 
