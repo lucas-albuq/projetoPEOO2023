@@ -117,6 +117,15 @@ class View:
     def Transferencia_listar_id(id):
         NTransferencia.listar_id(id)
 
+    def Transferencia_listar_nao_confirmadas():
+        transferencias = []
+        for transferencia in View.Transferencia_listar():
+            if not transferencia.get_confirmado():
+                transferencias.append(transferencia)
+        if len(transferencias) == 0:
+            return None
+        return transferencias
+
     def Transferencia_abrir_extrato_do_dia(data_inicio, data_fim):
         extrato = []
         for transferencia in NTransferencia.listar():
