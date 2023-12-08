@@ -2,6 +2,7 @@ from models.cliente import Cliente, NCliente
 from models.conta import Conta, NConta
 from models.transferencia import Transferencia, NTransferencia
 from datetime import datetime
+import random
 
 class View:
     def Cliente_inserir(nome, telefone, email, cpf, data_nascimento, senha):
@@ -46,8 +47,14 @@ class View:
                     return cliente
         return None
         
-    def Conta_inserir(id_cliente, saldo, limite, agencia, numero_conta, tipo_conta, confirmado):
-        conta = Conta(0, id_cliente, saldo, limite, agencia, numero_conta, tipo_conta, confirmado)
+    def Conta_inserir(id_cliente, saldo, limite, tipo_conta, confirmado):
+        while True:
+                numero_conta = str(random.randint(10000, 99999))
+
+                # Verificar se o número de conta já existe
+                if not View.Conta_existe(numero_conta):
+                    break
+        conta = Conta(0, id_cliente, saldo, limite, int(0001), str(numero_conta)+"-0", tipo_conta, confirmado)
         for obj in View.Conta_listar:
             if obj.get_id_cliente() == id_cliente:
                 raise ValueError("Esse cliente já possui uma conta")
@@ -99,8 +106,10 @@ class View:
             conta_pagador.set_saldo(conta_pagador.get_saldo()-valor)
         NTransferencia.inserir(transferencia)
 
-    def Transferencia_aprovar():
-        
+    def Transferencia_aprovar(id):
+        transferencia = View.Transferencia_listar_id(id)
+        View.Transferencia_atualizar()
+        View.Transferencia_atualizar(transferencia.get_id(), transferencia.get_id_conta(), transferencia.get_id_conta_do_recebedor(), transferencia.get_data_transferencia(), transferencia.get_valor(), True)
 
     def Transferencia_listar():
         NTransferencia.listar()
