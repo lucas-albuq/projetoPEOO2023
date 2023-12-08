@@ -1,5 +1,6 @@
 from templates.AbrirContaUI import AbrirContaUI
 from templates.AprovarContaUI import AprovarContaUI
+from templates.EditarPerfilUI import EditarPerfilUI
 from templates.LoginUI import LoginUI
 from templates.ManterContaUI import ManterContaUI
 from templates.RealizarTransferenciaUI import RealizarTransferenciaUI
@@ -24,9 +25,10 @@ class IndexUI:
         if op == "Validar Transferências": ValidarTransferenciaUI.main()
         
     def menu_cliente():
-        op = st.sidebar.selectbox("Menu", ["Realizar Transferência", "Visualizar Extrato"])
+        op = st.sidebar.selectbox("Menu", ["Realizar Transferência", "Visualizar Extrato", "Editar Perfil"])
         if op == "Realizar Transferência": RealizarTransferenciaUI.main()
         if op == "Visualizar Extrato": VisualizarExtratoUI.main()
+        if op == "Editar Perfil": EditarPerfilUI.main()
 
     def btn_logout():
         if st.sidebar.button("Logout"):
