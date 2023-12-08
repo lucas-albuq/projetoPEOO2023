@@ -86,9 +86,21 @@ class View:
         conta = View.Conta_listar_id(id)
         NConta.excluir(conta)
 
-    def Transferencia_inserir(id_conta, id_conta_do_recebedor, data_transferencia, valor, confirmado):
-        transferencia = Transferencia(0, id_conta, id_conta_do_recebedor, data_transferencia, valor, confirmado)
+    def Transferencia_inserir(id_conta, id_conta_do_recebedor, data_transferencia, valor):
+        conta_pagador = View.Conta_listar_id(id_conta)
+        conta_recebedor = View.Conta_listar_id(id_conta_do_recebedor)
+        if valor > conta_pagador.get_saldo():
+            raise ValueError("Saldo insuficiente")
+        elif valor > conta_pagador.get_limite():
+            transferencia = (id_conta, id_conta_do_recebedor, data_transferencia, valor, False)
+        else:
+            transferencia = (id_conta, id_conta_do_recebedor, data_transferencia, valor, True)
+            conta_recebedor.set_saldo(conta_recebedor.get_saldo()+valor)
+            conta_pagador.set_saldo(conta_pagador.get_saldo()-valor)
         NTransferencia.inserir(transferencia)
+
+    def Transferencia_aprovar():
+        
 
     def Transferencia_listar():
         NTransferencia.listar()
