@@ -11,7 +11,7 @@ import streamlit as st
 
 class IndexUI:
     def main():
-        View.cliente_admin()
+        View.Cliente_admin()
         IndexUI.sidebar()
     def menu_visitante():
         op = st.sidebar.selectbox("Menu", ["Login", "Abrir Conta"])
@@ -41,7 +41,7 @@ class IndexUI:
             IndexUI.menu_visitante()   
         else:
             st.sidebar.write("Bem-vindo(a), " + st.session_state["cliente_nome"])
-            clientes = View.cliente_listar()
+            clientes = View.Cliente_listar()
             if st.session_state["cliente_nome"] == clientes[0].get_nome(): IndexUI.menu_admin()
             else: IndexUI.menu_cliente()
             IndexUI.btn_logout()  

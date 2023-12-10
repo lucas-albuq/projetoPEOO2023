@@ -17,7 +17,7 @@ class ManterContaUI:
         if len(contas) == 0:
             st.write("Nenhuma conta cadastrada.")
         else:
-            dic = {}
+            dic = []
             for obj in contas: dic.append(obj.__dict__)
             dataframe = pd.DataFrame(dic)
             st.dataframe(dataframe)
@@ -32,7 +32,7 @@ class ManterContaUI:
         tipo_conta = st.text_input("Insira o tipo de conta")
         if st.button("Inserir"):
             try:
-                View.Conta_inserir(opCliente.get_id(), float(saldo), float(limite), int(agencia), numero_conta, tipo_conta, True)
+                View.Conta_inserir(opCliente.get_id(), float(saldo), float(limite), agencia, numero_conta, tipo_conta, True)
                 st.success("Conta inserida com sucesso.")
                 time.sleep(2)
                 st.rerun()
@@ -51,7 +51,7 @@ class ManterContaUI:
             tipo_conta = st.text_input("Insira o tipo de conta", op.get_tipo_conta())
             if st.button("Atualizar"):
                 try:
-                    View.Conta_atualizar(op.get_id(), op.get_id_cliente(), float(saldo), float(limite), int(agencia), numero_conta, tipo_conta, True)
+                    View.Conta_atualizar(op.get_id(), op.get_id_cliente(), float(saldo), float(limite), agencia, numero_conta, tipo_conta, True)
                     st.success("Conta atualizada com sucesso")
                     time.sleep(2)
                     st.rerun()

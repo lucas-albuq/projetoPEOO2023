@@ -10,7 +10,7 @@ class LoginUI:
     cpf = st.text_input("Informe o cpf")
     senha = st.text_input("Informe a senha")
     if st.button("Login"):
-      cliente = View.cliente_login(cpf, senha) 
+      cliente = View.Cliente_login(cpf, senha) 
       if cliente is not None:
         st.success("Login realizado com sucesso")
         st.success("Bem-vindo(a), " + cliente.get_nome())

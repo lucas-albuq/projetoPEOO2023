@@ -15,7 +15,7 @@ class AprovarContaUI:
         if len(contas_nao_aprovadas) == 0:
             st.write("Nenhuma conta para ser aprovada.")
         else:
-            dic = {}
+            dic = []
             for obj in contas_nao_aprovadas: dic.append(obj.__dict__)
             dataframe = pd.DataFrame(dic)
             st.dataframe(dataframe)
@@ -26,8 +26,11 @@ class AprovarContaUI:
             st.write("Nenhuma conta para ser aprovada.")
         else:
             op = st.selectbox("Aprovação de contas", contas_nao_aprovadas)
-            if st.button("Aprovar"):   
-                View.Conta_atualizar(op.get_id(), op.get_id_cliente(), op.get_saldo(), op.get_limite(), op.get_agencia(), op.get_numero_conta(), op.get_tipo_conta(), True)
-                st.success("Conta aprovada!")
-                time.sleep(2)
-                st.rerun()
+            if st.button("Aprovar"):  
+                try: 
+                    View.Conta_atualizar(op.get_id(), op.get_id_cliente(), op.get_saldo(), op.get_limite(), op.get_agencia(), op.get_numero_conta(), op.get_tipo_conta(), True)
+                    st.success("Conta aprovada!")
+                    time.sleep(2)
+                    st.rerun()
+                except ValueError as error:
+                    st.error(f"Erro: {error}")

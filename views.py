@@ -10,19 +10,19 @@ class View:
         for obj in View.Cliente_listar():
             if obj.get_cpf() == cpf:
                 raise ValueError("Cliente já cadastrado")
-        NCliente.inserir(Cliente)
+        NCliente.inserir(cliente)
         #validação dos outros dados já é feita dentro das classes
         #ver com Gilbert se também precisa fazer aqui
 
     def Cliente_listar():
-        NCliente.listar()
+        return NCliente.listar()
 
     def Cliente_listar_id(id):
-        NCliente.listar_id(id)
+        return NCliente.listar_id(id)
 
     def Cliente_listar_cpf(cpf):
         for cliente in View.Cliente_listar():
-            if cliente.get_cpf == cpf:
+            if cliente.get_cpf() == cpf:
                 return cliente
         return None
 
@@ -38,12 +38,14 @@ class View:
         for cliente in View.Cliente_listar():
             if cliente.get_nome() == "admin":
                 return
-        View.Cliente_inserir("admin", "admin", "admin", "000000000-00", datetime.today(), "0000")
+        View.Cliente_inserir("admin", "admin", "admin", "admin", datetime.today(), "admin")
+        View.Conta_inserir(1, 10000.00, 10000.00, "Conta Admin", True)
     
     def Cliente_login(cpf, senha):
         for cliente in View.Cliente_listar():
             if cliente.get_cpf() == cpf and cliente.get_senha() == senha:
-                if View.Conta_listar_id_cliente(cliente.get_id()).get_confirmado():
+                conta = View.Conta_listar_id_cliente(cliente.get_id())
+                if conta.get_confirmado():
                     return cliente
         return None
         
@@ -54,22 +56,22 @@ class View:
                 # Verificar se o número de conta já existe
                 if not View.Conta_existe(numero_conta):
                     break
-        conta = Conta(0, id_cliente, saldo, limite, int(0001), str(numero_conta)+"-0", tipo_conta, confirmado)
-        for obj in View.Conta_listar:
+        conta = Conta(0, id_cliente, saldo, limite, "0001", str(numero_conta)+"-0", tipo_conta, confirmado)
+        for obj in View.Conta_listar():
             if obj.get_id_cliente() == id_cliente:
                 raise ValueError("Esse cliente já possui uma conta")
         NConta.inserir(conta)
 
     def Conta_listar():
-        NConta.listar()
+        return NConta.listar()
 
     def Conta_listar_id(id):
-        NConta.listar_id(id)
+        return NConta.listar_id(id)
 
     def Conta_listar_id_cliente(id):
-        for cliente in View.Conta_listar():
-            if cliente.get_id_cliente() == id:
-                return cliente
+        for conta in View.Conta_listar():
+            if conta.get_id_cliente() == id:
+                return conta
         return None
     
     def Conta_listar_nao_aprovadas():
@@ -99,12 +101,14 @@ class View:
         if valor > conta_pagador.get_saldo():
             raise ValueError("Saldo insuficiente")
         elif valor > conta_pagador.get_limite():
-            transferencia = (id_conta, id_conta_do_recebedor, data_transferencia, valor, False)
+            transferencia = Transferencia(0, id_conta, id_conta_do_recebedor, data_transferencia, valor, False)
+            NTransferencia.inserir(transferencia)
         else:
-            transferencia = (id_conta, id_conta_do_recebedor, data_transferencia, valor, True)
+            transferencia = Transferencia(0, id_conta, id_conta_do_recebedor, data_transferencia, valor, True)
             conta_recebedor.set_saldo(conta_recebedor.get_saldo()+valor)
             conta_pagador.set_saldo(conta_pagador.get_saldo()-valor)
-        NTransferencia.inserir(transferencia)
+            NTransferencia.inserir(transferencia)
+            return True
 
     def Transferencia_aprovar(id):
         transferencia = View.Transferencia_listar_id(id)
@@ -112,10 +116,10 @@ class View:
         View.Transferencia_atualizar(transferencia.get_id(), transferencia.get_id_conta(), transferencia.get_id_conta_do_recebedor(), transferencia.get_data_transferencia(), transferencia.get_valor(), True)
 
     def Transferencia_listar():
-        NTransferencia.listar()
+        return NTransferencia.listar()
 
     def Transferencia_listar_id(id):
-        NTransferencia.listar_id(id)
+        return NTransferencia.listar_id(id)
 
     def Transferencia_listar_nao_confirmadas():
         transferencias = []
@@ -131,13 +135,13 @@ class View:
         conta = View.Conta_listar_id(id_conta)
         for transferencia in NTransferencia.listar():
             if (data_fim >= transferencia.get_data_transferencia() >= data_inicio) and (conta.get_id() == transferencia.get_id_conta() or conta.get_id() == transferencia.get_id_conta_do_recebedor()):
-                extrato.append(Transferencia)
+                extrato.append(transferencia)
         if len(extrato) == 0:
             return None
         return extrato
 
 
-    def Transferencia_atualizar(id, id_conta, id_conta_do_recebedor, data_transferencia, valor, confirmado):
+    def Transferencia_atualizar(id, id_conta, id_conta_do_recebedor, data_transferencia, valor, confirmado: bool):
         transferencia = Transferencia(id, id_conta, id_conta_do_recebedor, data_transferencia, valor, confirmado)
         NTransferencia.atualizar(transferencia)
 

@@ -94,8 +94,10 @@ class NCliente:
     @classmethod
     def inserir(cls, obj):
         cls.abrir()
-        id = max(cliente.get_id() for cliente in cls.__clientes) + 1
-        obj.set_id(id)
+        id = 0
+        for cliente in cls.listar():
+            if cliente.get_id() > id: id = cliente.get_id()
+        obj.set_id(id + 1)
         cls.__clientes.append(obj)
         cls.salvar()
 
@@ -105,10 +107,10 @@ class NCliente:
         return cls.__clientes
 
     @classmethod
-    def listar_id(cls, obj):
+    def listar_id(cls, id):
         cls.abrir()
         for cliente in cls.__clientes:
-            if cliente.get_id() == obj.get_id():
+            if cliente.get_id() == id:
                 return cliente
         return None
 
@@ -118,6 +120,12 @@ class NCliente:
         cliente = cls.listar_id(obj)
         if cliente is not None:
             cliente.set_nome(obj.get_nome())
+            cliente.set_telefone(obj.get_telefone())
+            cliente.set_email(obj.get_email())
+            cliente.set_cpf(obj.get_cpf())
+            cliente.set_data_nascimento(obj.get_data_nascimento())
+            cliente.set_senha(obj.get_senha())
+
             # Adicione outras atualizações conforme necessário
             cls.salvar()
 

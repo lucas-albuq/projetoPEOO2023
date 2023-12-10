@@ -9,7 +9,7 @@ class EditarPerfilUI:
         EditarPerfilUI.atualizar()
 
     def atualizar():
-        cliente = View.Cliente_listar_id(st.session_state["Cliente_id"])
+        cliente = View.Cliente_listar_id(st.session_state["cliente_id"])
         nome = st.text_input("Informe o nome", cliente.get_nome())
         telefone = st.text_input("Informe o telefone", cliente.get_telefone())
         email = st.text_input("Informe o e-mail", cliente.get_email())

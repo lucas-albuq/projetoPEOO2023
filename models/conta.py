@@ -23,7 +23,7 @@ class Conta:
             "agencia": self.__agencia,
             "numero_conta": self.__numero_conta,
             "tipo_conta": self.__tipo_conta,
-            "confirmado": self.__confimado
+            "confirmado": self.__confirmado
         }
 
     def get_id(self):
@@ -75,7 +75,7 @@ class Conta:
             raise ValueError("Valor do limite inválido")
 
     def set_agencia(self, agencia):
-        if isinstance(agencia, int):
+        if isinstance(agencia, str) and len(agencia.strip()) != 0:
             self.__agencia = agencia
         else:
             raise ValueError("Agência inválida")
@@ -103,8 +103,10 @@ class NConta:
     @classmethod
     def inserir(cls, obj):
         cls.abrir()
-        id = max(acc.get_id() for acc in cls.__contas) + 1
-        obj.set_id(id)
+        id = 0
+        for acc in cls.listar():
+            if acc.get_id() > id: id = acc.get_id()
+        obj.set_id(id + 1)
         cls.__contas.append(obj)
         cls.salvar()
 
@@ -114,10 +116,10 @@ class NConta:
         return cls.__contas
 
     @classmethod
-    def listar_id(cls, obj):
+    def listar_id(cls, id):
         cls.abrir()
         for acc in cls.__contas:
-            if acc.get_id() == obj.get_id():
+            if acc.get_id() == id:
                 return acc
         return None
 
@@ -126,7 +128,12 @@ class NConta:
         cls.abrir()
         acc = cls.listar_id(obj)
         if acc is not None:
-            acc.set_nome(obj.get_nome())
+            acc.set_saldo(obj.get_saldo())
+            acc.set_limite(obj.get_limite())
+            acc.set_agencia(obj.get_agencia())
+            acc.set_numero_conta(obj.get_numero_conta())
+            acc.set_tipo_conta(obj.get_tipo_conta())
+            acc.set_confirmado(obj.get_confirmado())
             cls.salvar()
 
     @classmethod

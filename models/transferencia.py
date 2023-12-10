@@ -1,5 +1,5 @@
 import json
-import datetime
+from datetime import datetime
 
 class Transferencia:
     def __init__(self, id, id_conta, id_conta_do_recebedor, data_transferencia, valor, confirmado):
@@ -81,8 +81,10 @@ class NTransferencia:
     @classmethod
     def inserir(cls, obj):
         cls.abrir()
-        id = max(transferencia.get_id() for transferencia in cls.__transferencias) + 1
-        obj.set_id(id)
+        id = 0
+        for trasnferencia in cls.listar():
+            if trasnferencia.get_id() > id: id = trasnferencia.get_id()
+        obj.set_id(id + 1)
         cls.__transferencias.append(obj)
         cls.salvar()
 
