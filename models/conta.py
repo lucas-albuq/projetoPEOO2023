@@ -12,7 +12,7 @@ class Conta:
         self.set_confirmado(confirmado)
 
     def __str__(self):
-        return f"id - {self.__id}, id do Cliente - {self.__id_cliente}, Saldo - {self.__saldo}, Limite - {self.__limite}, Agência - {self.__agencia}, Número da Conta - {self.__numero_conta}, Tipo de Conta - {self.__tipo_conta}"
+        return f"id - {self.__id}, id do Cliente - {self.__id_cliente}, Saldo - {self.__saldo}, Limite - {self.__limite}, Agência - {self.__agencia}, Número da Conta - {self.__numero_conta}, Tipo de Conta - {self.__tipo_conta}, Confirmado - {self.__confirmado}"
 
     def to_json(self):
         return {
@@ -126,7 +126,7 @@ class NConta:
     @classmethod
     def atualizar(cls, obj):
         cls.abrir()
-        acc = cls.listar_id(obj)
+        acc = cls.listar_id(obj.get_id())
         if acc is not None:
             acc.set_saldo(obj.get_saldo())
             acc.set_limite(obj.get_limite())
