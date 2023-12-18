@@ -11,8 +11,6 @@ class View:
             if obj.get_cpf() == cpf:
                 raise ValueError("Cliente já cadastrado")
         NCliente.inserir(cliente)
-        #validação dos outros dados já é feita dentro das classes
-        #ver com Gilbert se também precisa fazer aqui
 
     def Cliente_listar():
         return NCliente.listar()
@@ -44,9 +42,10 @@ class View:
     def Cliente_login(cpf, senha):
         for cliente in View.Cliente_listar():
             if cliente.get_cpf() == cpf and cliente.get_senha() == senha:
-                conta = View.Conta_listar_id_cliente(cliente.get_id())
-                if conta.get_confirmado():
-                    return cliente
+                contas = View.Conta_listar_id_cliente(cliente.get_id())
+                if len(contas) > 0:
+                    for conta in contas:
+                        if conta.get_confirmado(): return cliente
         return None
         
     def Conta_inserir(id_cliente, saldo, limite, tipo_conta, confirmado):
@@ -69,10 +68,11 @@ class View:
         return NConta.listar_id(id)
 
     def Conta_listar_id_cliente(id):
+        contas = []
         for conta in View.Conta_listar():
             if conta.get_id_cliente() == id:
-                return conta
-        return None
+                contas.append(conta)
+        return contas
     
     def Conta_listar_nao_aprovadas():
         contas_nao_aprovadas = []

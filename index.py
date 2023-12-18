@@ -4,6 +4,7 @@ from templates.EditarPerfilUI import EditarPerfilUI
 from templates.LoginUI import LoginUI
 from templates.ManterContaUI import ManterContaUI
 from templates.RealizarTransferenciaUI import RealizarTransferenciaUI
+from templates.ResgatarDinheiroUI import ResgatarDinheiroUI
 from templates.ValidarTransferenciaUI import ValidarTransferenciaUI
 from templates.VisualizarExtratoUI import VisualizarExtratoUI
 from views import View
@@ -24,11 +25,15 @@ class IndexUI:
         if op == "Aprovar Contas": AprovarContaUI.main()
         if op == "Validar Transferências": ValidarTransferenciaUI.main()
         
-    def menu_cliente():
+    def menu_cc():
         op = st.sidebar.selectbox("Menu", ["Realizar Transferência", "Visualizar Extrato", "Editar Perfil"])
         if op == "Realizar Transferência": RealizarTransferenciaUI.main()
         if op == "Visualizar Extrato": VisualizarExtratoUI.main()
         if op == "Editar Perfil": EditarPerfilUI.main()
+
+    def menu_cp():
+        op = st.sidebar.selectbox("Menu", ["Resgatar Dinheiro", "Editar Perfil"])
+        if op == "Resgatar Dinheiro": 
 
     def btn_logout():
         if st.sidebar.button("Logout"):
