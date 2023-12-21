@@ -111,7 +111,7 @@ class View:
         
         if valor > conta_pagador.get_saldo():
             raise ValueError("Saldo insuficiente")
-        if conta_pagador.get_tipo_conta() is "Conta Poupança":
+        if conta_pagador.get_tipo_conta() is not "Conta Poupança":
             if valor > conta_pagador.get_limite():
                 transferencia = Transferencia(0, id_conta, id_conta_do_recebedor, data_transferencia, valor, False)
                 NTransferencia.inserir(transferencia)
@@ -132,7 +132,6 @@ class View:
         conta_pagador = View.Conta_listar_id(transferencia.get_id_conta())
         conta_recebedor = View.Conta_listar_id(transferencia.get_id_conta_do_recebedor())
         valor = transferencia.get_valor()
-        View.Transferencia_atualizar()
         View.Transferencia_atualizar(transferencia.get_id(), transferencia.get_id_conta(), transferencia.get_id_conta_do_recebedor(), transferencia.get_data_transferencia(), transferencia.get_valor(), True)
         View.Conta_atualizar(conta_recebedor.get_id(), conta_recebedor.get_id_cliente(), conta_recebedor.get_saldo() + valor, conta_recebedor.get_limite(), conta_recebedor.get_agencia(), conta_recebedor.get_numero_conta(), conta_recebedor.get_tipo_conta(), conta_recebedor.get_confirmado())
         View.Conta_atualizar(conta_pagador.get_id(), conta_pagador.get_id_cliente(), conta_pagador.get_saldo() - valor, conta_pagador.get_limite(), conta_pagador.get_agencia(), conta_pagador.get_numero_conta(), conta_pagador.get_tipo_conta(), conta_pagador.get_confirmado())
