@@ -6,7 +6,24 @@ import time
 class EditarPerfilUI:
     def main():
         st.header("Editar Perfil")
-        EditarPerfilUI.atualizar()
+        tab1, tab2 = st.tabs(["Atualizar dados", "Gerenciar conta"])
+        with tab1: EditarPerfilUI.atualizar()
+        with tab2: EditarPerfilUI.dados_da_conta()
+
+    def dados_da_conta():
+        conta = View.Conta_listar_por_tipo(st.session_state["cliente_id"], st.session_state["tipo_conta"])
+        st.title('Detalhes da Conta')
+        st.write(f'Saldo: {conta.get_saldo()}')
+        st.write(f'Limite: {conta.get_limite()}')
+        st.write(f'Agência: {conta.get_agencia()}')
+        st.write(f'Número da Conta: {conta.get_numero_conta()}')
+        st.write(f'Tipo de Conta: {conta.get_tipo_conta()}')
+
+        if st.button("Excluir conta"):
+            View.Conta_excluir(conta.get_id())
+            st.success("Conta excluída com sucesso!")
+            time.sleep(2)
+            st.rerun()
 
     def atualizar():
         cliente = View.Cliente_listar_id(st.session_state["cliente_id"])

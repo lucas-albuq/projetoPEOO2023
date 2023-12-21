@@ -12,7 +12,8 @@ class RealizarTransferenciaUI:
     def inserir():
         clientes = View.Cliente_listar()
         del(clientes[0])
-        cliente = View.Cliente_listar_id(st.session_state["cliente_id"])
+        cc = View.Conta_listar_id(st.session_state["conta_id"])
+        st.write(f"Meu saldo: {cc.get_saldo()}")
         op = st.selectbox("Destinatário", clientes)
         valor = st.number_input("Valor da transferencia")
         if st.button("Realizar Transferência"):

@@ -3,6 +3,7 @@ from models.conta import Conta, NConta
 from models.transferencia import Transferencia, NTransferencia
 from datetime import datetime
 import random
+import streamlit as st
 
 class View:
     def Cliente_inserir(nome, telefone, email, cpf, data_nascimento, senha):
@@ -42,10 +43,7 @@ class View:
     def Cliente_login(cpf, senha):
         for cliente in View.Cliente_listar():
             if cliente.get_cpf() == cpf and cliente.get_senha() == senha:
-                contas = View.Conta_listar_id_cliente(cliente.get_id())
-                if len(contas) > 0:
-                    for conta in contas:
-                        if conta.get_confirmado(): return cliente
+                return cliente
         return None
         
     def Conta_inserir(id_cliente, saldo, limite, tipo_conta, confirmado):
@@ -56,9 +54,6 @@ class View:
                 if not View.Conta_existe(numero_conta):
                     break
         conta = Conta(0, id_cliente, saldo, limite, "0001", str(numero_conta)+"-0", tipo_conta, confirmado)
-        for obj in View.Conta_listar():
-            if obj.get_id_cliente() == id_cliente:
-                raise ValueError("Esse cliente já possui uma conta")
         NConta.inserir(conta)
 
     def Conta_listar():
@@ -74,6 +69,21 @@ class View:
                 contas.append(conta)
         return contas
     
+    def Conta_listar_tipos_por_id_cliente(id):
+        contas = View.Conta_listar_id_cliente(id)
+        tipos = []
+        for conta in contas:
+            if conta.get_confirmado():
+                tipos.append(conta.get_tipo_conta())
+        return tipos
+    
+    def Conta_listar_por_tipo(id, tipo):
+        contas = View.Conta_listar_id_cliente(id)
+        for conta in contas:
+            if conta.get_tipo_conta() == tipo:
+                return conta
+        return None
+        
     def Conta_listar_nao_aprovadas():
         contas_nao_aprovadas = []
         for conta in View.Conta_listar():
@@ -98,23 +108,35 @@ class View:
     def Transferencia_inserir(id_conta, id_conta_do_recebedor, data_transferencia, valor):
         conta_pagador = View.Conta_listar_id(id_conta)
         conta_recebedor = View.Conta_listar_id(id_conta_do_recebedor)
+        
         if valor > conta_pagador.get_saldo():
             raise ValueError("Saldo insuficiente")
-        elif valor > conta_pagador.get_limite():
-            transferencia = Transferencia(0, id_conta, id_conta_do_recebedor, data_transferencia, valor, False)
-            NTransferencia.inserir(transferencia)
-        else:
-            transferencia = Transferencia(0, id_conta, id_conta_do_recebedor, data_transferencia, valor, True)
-            conta_recebedor.set_saldo(conta_recebedor.get_saldo()+valor)
-            conta_pagador.set_saldo(conta_pagador.get_saldo()-valor)
-            NTransferencia.inserir(transferencia)
-            return True
+        if conta_pagador.get_tipo_conta() is "Conta Poupança":
+            if valor > conta_pagador.get_limite():
+                transferencia = Transferencia(0, id_conta, id_conta_do_recebedor, data_transferencia, valor, False)
+                NTransferencia.inserir(transferencia)
+                return False
+            else:
+                transferencia = Transferencia(0, id_conta, id_conta_do_recebedor, data_transferencia, valor, True)
+                View.Conta_atualizar(conta_recebedor.get_id(), conta_recebedor.get_id_cliente(), conta_recebedor.get_saldo() + valor, conta_recebedor.get_limite(), conta_recebedor.get_agencia(), conta_recebedor.get_numero_conta(), conta_recebedor.get_tipo_conta(), conta_recebedor.get_confirmado())
+                View.Conta_atualizar(conta_pagador.get_id(), conta_pagador.get_id_cliente(), conta_pagador.get_saldo() - valor, conta_pagador.get_limite(), conta_pagador.get_agencia(), conta_pagador.get_numero_conta(), conta_pagador.get_tipo_conta(), conta_pagador.get_confirmado())
+                NTransferencia.inserir(transferencia)
+                return True
+        transferencia = Transferencia(0, id_conta, id_conta_do_recebedor, data_transferencia, valor, True)
+        View.Conta_atualizar(conta_recebedor.get_id(), conta_recebedor.get_id_cliente(), conta_recebedor.get_saldo() + valor, conta_recebedor.get_limite(), conta_recebedor.get_agencia(), conta_recebedor.get_numero_conta(), conta_recebedor.get_tipo_conta(), conta_recebedor.get_confirmado())
+        View.Conta_atualizar(conta_pagador.get_id(), conta_pagador.get_id_cliente(), conta_pagador.get_saldo() - valor, conta_pagador.get_limite(), conta_pagador.get_agencia(), conta_pagador.get_numero_conta(), conta_pagador.get_tipo_conta(), conta_pagador.get_confirmado())
+        NTransferencia.inserir(transferencia)
 
     def Transferencia_aprovar(id):
         transferencia = View.Transferencia_listar_id(id)
+        conta_pagador = View.Conta_listar_id(transferencia.get_id_conta())
+        conta_recebedor = View.Conta_listar_id(transferencia.get_id_conta_do_recebedor())
+        valor = transferencia.get_valor()
         View.Transferencia_atualizar()
         View.Transferencia_atualizar(transferencia.get_id(), transferencia.get_id_conta(), transferencia.get_id_conta_do_recebedor(), transferencia.get_data_transferencia(), transferencia.get_valor(), True)
-
+        View.Conta_atualizar(conta_recebedor.get_id(), conta_recebedor.get_id_cliente(), conta_recebedor.get_saldo() + valor, conta_recebedor.get_limite(), conta_recebedor.get_agencia(), conta_recebedor.get_numero_conta(), conta_recebedor.get_tipo_conta(), conta_recebedor.get_confirmado())
+        View.Conta_atualizar(conta_pagador.get_id(), conta_pagador.get_id_cliente(), conta_pagador.get_saldo() - valor, conta_pagador.get_limite(), conta_pagador.get_agencia(), conta_pagador.get_numero_conta(), conta_pagador.get_tipo_conta(), conta_pagador.get_confirmado())
+    
     def Transferencia_listar():
         return NTransferencia.listar()
 

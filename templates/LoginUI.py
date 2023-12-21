@@ -17,6 +17,6 @@ class LoginUI:
         st.session_state["cliente_id"] = cliente.get_id()
         st.session_state["cliente_nome"] = cliente.get_nome()
       else:
-        st.error("Usuário ou senha inválido(s) ou sua conta ainda não foi aprovada!")
+        st.error("Usuário ou senha inválido(s)!")
       time.sleep(2)
       st.rerun()      

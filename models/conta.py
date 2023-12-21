@@ -139,7 +139,7 @@ class NConta:
     @classmethod
     def excluir(cls, obj):
         cls.abrir()
-        acc = cls.listar_id(obj)
+        acc = cls.listar_id(obj.get_id())
         if acc is not None:
             cls.__contas.remove(acc)
             cls.salvar()
