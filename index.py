@@ -1,5 +1,6 @@
 from templates.AbrirContaUI import AbrirContaUI
 from templates.AprovarContaUI import AprovarContaUI
+from templates.DepositarDinheiroUI import DepositarDinheiroUI
 from templates.EditarPerfilUI import EditarPerfilUI
 from templates.FazerCadastroUI import FazerCadastroUI
 from templates.LoginUI import LoginUI
@@ -39,9 +40,10 @@ class IndexUI:
         st.session_state["tipo_conta"] = "Conta Corrente"
         st.session_state["conta_id"] = View.Conta_listar_por_tipo(st.session_state["cliente_id"], "Conta Corrente").get_id()
         
-        op = st.sidebar.selectbox("Menu", ["Realizar Transferência", "Visualizar Extrato", "Editar Perfil"])
+        op = st.sidebar.selectbox("Menu", ["Realizar Transferência", "Visualizar Extrato", "Depositar Dinheiro", "Editar Perfil"])
         if op == "Realizar Transferência": RealizarTransferenciaUI.main()
         if op == "Visualizar Extrato": VisualizarExtratoUI.main()
+        if op == "Depositar Dinheiro": DepositarDinheiroUI.main()
         if op == "Editar Perfil": EditarPerfilUI.main()
 
     def menu_cp():
