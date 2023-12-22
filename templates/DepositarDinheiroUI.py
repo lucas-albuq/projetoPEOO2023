@@ -14,7 +14,7 @@ class DepositarDinheiroUI:
         valor = st.number_input("Insira o valor para depositar")
         if st.button("depositar dinheiro"):
             try:
-                st.write(View.Transferencia_inserir(cp.get_id(), cc.get_id(), datetime.now(), valor))
+                View.Transferencia_inserir(cp.get_id(), cc.get_id(), datetime.now(), valor)
                 st.success("Dinheiro depositado com sucesso!")
                 time.sleep(2)
                 st.rerun()

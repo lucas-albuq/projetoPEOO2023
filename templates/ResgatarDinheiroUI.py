@@ -14,7 +14,7 @@ class ResgatarDinheiroUI:
         valor = st.number_input("Insira o valor para resgatar")
         if st.button("Resgatar dinheiro"):
             try:
-                st.write(View.Transferencia_inserir(cp.get_id(), cc.get_id(), datetime.now(), valor))
+                View.Transferencia_inserir(cp.get_id(), cc.get_id(), datetime.now(), valor)
                 st.success("Dinheiro resgatado com sucesso!")
                 time.sleep(2)
                 st.rerun()
