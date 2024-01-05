@@ -3,7 +3,6 @@ from models.conta import Conta, NConta
 from models.transferencia import Transferencia, NTransferencia
 from datetime import datetime
 import random
-import streamlit as st
 
 class View:
     def Cliente_inserir(nome, telefone, email, cpf, data_nascimento, senha):
@@ -83,7 +82,15 @@ class View:
             if conta.get_tipo_conta() == tipo:
                 return conta
         return None
-        
+
+    def Conta_listar_tipos(tipo, id_conta):
+        contas = View.Conta_listar()
+        contas_tipo = []
+        for conta in contas:
+            if conta.get_tipo_conta() == tipo and conta.get_id() != id_conta:
+                contas_tipo.append(conta)
+        return contas_tipo
+
     def Conta_listar_nao_aprovadas():
         contas_nao_aprovadas = []
         for conta in View.Conta_listar():
@@ -111,7 +118,7 @@ class View:
         
         if valor > conta_pagador.get_saldo():
             raise ValueError("Saldo insuficiente")
-        if conta_pagador.get_tipo_conta() is not "Conta Poupança":
+        if conta_pagador.get_tipo_conta() is not "Conta Poupança" or conta_recebedor.get_tipo_conta() is not "Conta Poupança":
             if valor > conta_pagador.get_limite():
                 transferencia = Transferencia(0, id_conta, id_conta_do_recebedor, data_transferencia, valor, False)
                 NTransferencia.inserir(transferencia)

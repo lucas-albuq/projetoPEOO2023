@@ -10,11 +10,10 @@ class RealizarTransferenciaUI:
         RealizarTransferenciaUI.inserir()
 
     def inserir():
-        clientes = View.Cliente_listar()
-        del(clientes[0])
+        contas = View.Conta_listar_tipos("Conta Corrente", st.session_state["conta_id"])
         cc = View.Conta_listar_id(st.session_state["conta_id"])
         st.write(f"Meu saldo: {cc.get_saldo()}")
-        op = st.selectbox("Destinatário", clientes)
+        op = st.selectbox("Destinatário", contas)
         valor = st.number_input("Valor da transferencia")
         if st.button("Realizar Transferência"):
             try:
