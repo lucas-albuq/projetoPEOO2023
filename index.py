@@ -50,8 +50,9 @@ class IndexUI:
         st.session_state["tipo_conta"] = "Conta Poupança"
         st.session_state["conta_id"] = View.Conta_listar_por_tipo(st.session_state["cliente_id"], "Conta Poupança").get_id()
 
-        op = st.sidebar.selectbox("Menu", ["Resgatar Dinheiro", "Editar Perfil"])
+        op = st.sidebar.selectbox("Menu", ["Resgatar Dinheiro", "Visualizar Extrato", "Editar Perfil"]) 
         if op == "Resgatar Dinheiro": ResgatarDinheiroUI.main()
+        if op == "Visualizar Extrato": VisualizarExtratoUI.main()
         if op == "Editar Perfil": EditarPerfilUI.main()
 
     def btn_logout():

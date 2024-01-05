@@ -9,7 +9,7 @@ class VisualizarExtratoUI:
         VisualizarExtratoUI.abrir_extrato()
 
     def abrir_extrato():
-        conta = View.Conta_listar_id_cliente(st.session_state["cliente_id"])
+        conta = View.Conta_listar_id(st.session_state["conta_id"])
         data_inicio_str = st.text_input("Data de início (dd/mm/aaaa)")
         data_fim_str = st.text_input("Data final (dd/mm/aaaa)")
         if st.button('Abrir extrato'):
