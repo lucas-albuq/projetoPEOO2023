@@ -1,5 +1,5 @@
 import json
-
+from models.modelo import Modelo
 class Conta:
     def __init__(self, id, id_cliente, saldo, limite, agencia, numero_conta, tipo_conta, confirmado):
         self.set_id(id)
@@ -97,61 +97,16 @@ class Conta:
             self.__confirmado = confirmado
         else:
             raise ValueError("Confirmação inválida")
-class NConta:
-    __contas = []
-
-    @classmethod
-    def inserir(cls, obj):
-        cls.abrir()
-        id = 0
-        for acc in cls.listar():
-            if acc.get_id() > id: id = acc.get_id()
-        obj.set_id(id + 1)
-        cls.__contas.append(obj)
-        cls.salvar()
-
-    @classmethod
-    def listar(cls):
-        cls.abrir()
-        return cls.__contas
-
-    @classmethod
-    def listar_id(cls, id):
-        cls.abrir()
-        for acc in cls.__contas:
-            if acc.get_id() == id:
-                return acc
-        return None
-
-    @classmethod
-    def atualizar(cls, obj):
-        cls.abrir()
-        acc = cls.listar_id(obj.get_id())
-        if acc is not None:
-            acc.set_saldo(obj.get_saldo())
-            acc.set_limite(obj.get_limite())
-            acc.set_agencia(obj.get_agencia())
-            acc.set_numero_conta(obj.get_numero_conta())
-            acc.set_tipo_conta(obj.get_tipo_conta())
-            acc.set_confirmado(obj.get_confirmado())
-            cls.salvar()
-
-    @classmethod
-    def excluir(cls, obj):
-        cls.abrir()
-        acc = cls.listar_id(obj.get_id())
-        if acc is not None:
-            cls.__contas.remove(acc)
-            cls.salvar()
-
+class NConta (Modelo):
+   
     @classmethod
     def salvar(cls):
         with open("contas.json", mode="w") as arquivo:
-            json.dump(cls.__contas, arquivo, default=Conta.to_json)
+            json.dump(cls.objetos, arquivo, default=Conta.to_json)
 
     @classmethod
     def abrir(cls):
-        cls.__contas = []
+        cls.objetos = []
         try:
             with open("contas.json", mode="r") as arquivo:
                 contas_json = json.load(arquivo)
@@ -166,6 +121,6 @@ class NConta:
                         obj["tipo_conta"],
                         obj["confirmado"]
                     )
-                    cls.__contas.append(acc)
+                    cls.objetos.append(acc)
         except FileNotFoundError:
             pass

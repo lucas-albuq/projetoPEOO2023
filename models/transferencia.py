@@ -1,4 +1,5 @@
 import json
+from models.modelo import Modelo
 from datetime import datetime
 
 class Transferencia:
@@ -75,51 +76,16 @@ class Transferencia:
         else: 
             raise ValueError("Confirmação inválida")
 
-class NTransferencia:
-    __transferencias = []
-
-    @classmethod
-    def inserir(cls, obj):
-        cls.abrir()
-        id = 0
-        for trasnferencia in cls.listar():
-            if trasnferencia.get_id() > id: id = trasnferencia.get_id()
-        obj.set_id(id + 1)
-        cls.__transferencias.append(obj)
-        cls.salvar()
-
-    @classmethod
-    def listar(cls):
-        cls.abrir()
-        return cls.__transferencias
-    
-    @classmethod
-    def listar_id(cls, id):
-        cls.abrir()
-        for transferencia in cls.__transferencias:
-            if transferencia.get_id() == id:
-                return transferencia
-        return None
-    
-    @classmethod
-    def atualizar(cls, obj):
-        cls.abrir()
-        transferencia = cls.listar_id(obj.get_id())
-        if transferencia is not None:
-            transferencia.set_id_conta(obj.get_id_conta())
-            transferencia.set_id_conta_do_recebedor(obj.get_id_conta_do_recebedor())
-            transferencia.set_valor(obj.get_valor())
-            transferencia.set_confirmado(obj.get_confirmado())
-        cls.salvar()
+class NTransferencia(Modelo):
     
     @classmethod
     def salvar(cls):
         with open("transferencias.json", mode="w") as arquivo:
-            json.dump(cls.__transferencias, arquivo, default=Transferencia.to_json)
+            json.dump(cls.objetos, arquivo, default=Transferencia.to_json)
 
     @classmethod
     def abrir(cls):
-        cls.__transferencias = []
+        cls.objetos = []
         try:
             with open("transferencias.json", mode="r") as arquivo:
                 transferencias_json = json.load(arquivo)
@@ -132,6 +98,6 @@ class NTransferencia:
                         obj["valor"],
                         obj["confirmado"]
                         )
-                    cls.__transferencias.append(transferencia)
+                    cls.objetos.append(transferencia)
         except FileNotFoundError:
             pass

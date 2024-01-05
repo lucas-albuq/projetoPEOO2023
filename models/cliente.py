@@ -1,4 +1,5 @@
 import json
+from models.modelo import Modelo
 from datetime import datetime
 
 class Cliente:
@@ -88,63 +89,16 @@ class Cliente:
         else:
             raise ValueError("Senha inválida")
 
-class NCliente:
-    __clientes = []
-
-    @classmethod
-    def inserir(cls, obj):
-        cls.abrir()
-        id = 0
-        for cliente in cls.listar():
-            if cliente.get_id() > id: id = cliente.get_id()
-        obj.set_id(id + 1)
-        cls.__clientes.append(obj)
-        cls.salvar()
-
-    @classmethod
-    def listar(cls):
-        cls.abrir()
-        return cls.__clientes
-
-    @classmethod
-    def listar_id(cls, id):
-        cls.abrir()
-        for cliente in cls.__clientes:
-            if cliente.get_id() == id:
-                return cliente
-        return None
-
-    @classmethod
-    def atualizar(cls, obj):
-        cls.abrir()
-        cliente = cls.listar_id(obj)
-        if cliente is not None:
-            cliente.set_nome(obj.get_nome())
-            cliente.set_telefone(obj.get_telefone())
-            cliente.set_email(obj.get_email())
-            cliente.set_cpf(obj.get_cpf())
-            cliente.set_data_nascimento(obj.get_data_nascimento())
-            cliente.set_senha(obj.get_senha())
-
-            # Adicione outras atualizações conforme necessário
-            cls.salvar()
-
-    @classmethod
-    def excluir(cls, obj):
-        cls.abrir()
-        cliente = cls.listar_id(obj)
-        if cliente is not None:
-            cls.__clientes.remove(cliente)
-            cls.salvar()
-
+class NCliente(Modelo):
+    
     @classmethod
     def salvar(cls):
         with open("clientes.json", mode="w") as arquivo:
-            json.dump(cls.__clientes, arquivo, default=Cliente.to_json)
+            json.dump(cls.objetos, arquivo, default=Cliente.to_json)
 
     @classmethod
     def abrir(cls):
-        cls.__clientes = []
+        cls.objetos = []
         try:
             with open("clientes.json", mode="r") as arquivo:
                 clientes_json = json.load(arquivo)
@@ -158,6 +112,6 @@ class NCliente:
                         datetime.strptime(obj["data_nascimento"], "%Y-%m-%d"),
                         obj["senha"]
                     )
-                    cls.__clientes.append(cliente)
+                    cls.objetos.append(cliente)
         except FileNotFoundError:
             pass
